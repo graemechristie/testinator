@@ -1,8 +1,8 @@
 # Testinator
 
-> Its like the Terminator - but for slow running database tests
-
 Lightning fast test database instances for EF Core databases (Sql Server only)  
+
+> Its like the Terminator - but for slow running database tests
 
 This is currently early release beta software
 

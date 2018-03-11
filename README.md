@@ -34,7 +34,7 @@ e.g.
   }
 ```
 
-Altertively, if you are using Xunit and want a Database instance per Class/Collection, you could use a TestFixture such as the following:
+Alternatively, if you are using Xunit and want a Database instance per Class/Collection, you could use a TestFixture such as the following:
 
 ```C#
     public class TestinatorFixture<TContext> : IDisposable where TContext : DbContext

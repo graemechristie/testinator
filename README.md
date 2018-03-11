@@ -8,9 +8,9 @@ This is currently early release beta software
 
 Running unit tests against SQL LocalDb instances can be very slow, particularly if you want to create a new DB Instance per Test or Per Collection. The EF Core Database.EnsureCreated() call can take 10-20 seconds. Repeat this by a few dozen tests and this can get very time consuming.
 
-This library will give you a TestContextManager class, that will create a single instance of the database per migration, and store the created mdf and ldf files in a cache directory (%AppData%\Roaming\Testinator by default). Then, for this and each subsequent request for that database the cached database files are copied to the working directory and the database name is changed to a unique database name. The TestManager instance will then have it's ConnectionString (and also for convenenience an Options propery created using teh connection string) set to the Connection string for this database instance.
+This library will give you a TestContextManager class, that will create a single instance of the database per migration, and store the created mdf and ldf files in a cache directory (%AppData%\Roaming\Testinator by default). Then, for this and each subsequent request for that database the cached database files are copied to the working directory and the database name is changed to a unique database name. The TestManager instance will then have it's ConnectionString (and also for convenenience an Options propery created using the connection string) set to the Connection string for this database instance.
 
-When the TestManager instance is Disposed, the database instance will be deleted.
+When the TestManager instance is Disposed, the database instance and any files will be deleted.
 
 ## Installation
 

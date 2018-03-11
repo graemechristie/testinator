@@ -24,7 +24,7 @@ e.g.
 
 ```C#
   [Fact]
-  public async Task WhenIReadAnObjectFromTheDBItExists()
+  public async Task WhenIReadAnObjectFromTheDBThenItExists()
   {
       using (var manager = new TestContextManager<MyDbContext>())
       {

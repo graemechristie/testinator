@@ -23,9 +23,9 @@ e.g.
   [Fact]
   public async Task WhenIReadAnObjectFromTheDBItExists()
   {
-      using (var manager = new TestContextManager<TestContext>())
+      using (var manager = new TestContextManager<MyDbContext>())
       {
-          using (var ctx = new TestContext(manager.Options))
+          using (var ctx = new MyDbContext(manager.Options))
           {
               var widget = await ctx.FindAsync<Widget>(1);
               Assert.Equal(1, widget.Id);

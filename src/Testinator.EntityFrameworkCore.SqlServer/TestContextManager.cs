@@ -163,10 +163,19 @@ namespace Testinator.EntityFrameworkCore.SqlServer.Test
             if (string.IsNullOrWhiteSpace(ConnectionString))
                 return;
 
-            using (var context = (TContext)(Activator.CreateInstance(typeof(TContext), Options)))
-            {
-                context.Database.EnsureDeleted();
-            }
+            var builder = new SqlConnectionStringBuilder(ConnectionString);
+
+            var sql = $"ALTER DATABASE [{builder.InitialCatalog}] SET OFFLINE WITH ROLLBACK IMMEDIATE; exec sp_detach_db '{builder.InitialCatalog}'";
+            ExecuteLocalDbNonQuerySql(sql);
+
+            File.Delete(builder.AttachDBFilename);
+            File.Delete(builder.AttachDBFilename.Replace(".mdf", "_log.ldf"));
+
+            //This seems to have file locking issues on some machines. Falling back to the above hack for the moment.   
+            //using (var context = (TContext)(Activator.CreateInstance(typeof(TContext), Options)))
+            //{
+            //    context.Database.EnsureDeleted();
+            //}
         }
     }
 }

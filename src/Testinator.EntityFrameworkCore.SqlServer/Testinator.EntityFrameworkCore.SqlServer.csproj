@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Testinator.EntityFrameworkCore.SqlServer</PackageId>
-    <Version>0.0.1-pre01</Version>
+    <Version>0.0.1-pre02</Version>
     <Authors>Graeme Christie</Authors>
   </PropertyGroup>
 

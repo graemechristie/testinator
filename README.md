@@ -24,7 +24,7 @@ e.g.
 
 ```C#
   [Fact]
-  public async Task WhenIReadAnObjectFromTheDBItExists()
+  public async Task WhenIReadAnObjectFromTheDBThenItExists()
   {
       using (var manager = new TestContextManager<MyDbContext>())
       {
@@ -53,9 +53,6 @@ Alternatively, if you are using Xunit and want a Database instance per Class/Col
 
         public void Dispose()
         {
-            if (_testContextManager == null)
-                return;
-
             _testContextManager.Dispose();
         }
     }

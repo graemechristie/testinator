@@ -3,14 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Testinator.EntityFrameworkCore.SqlServer</PackageId>
-    <Version>0.0.1-pre02</Version>
+    <Version>0.0.1-pre04</Version>
     <Authors>Graeme Christie</Authors>
   </PropertyGroup>
 
-
-  
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0-preview1-final" />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

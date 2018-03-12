@@ -3,6 +3,8 @@ using System;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 
 namespace Testinator.EntityFrameworkCore.SqlServer.Test
@@ -45,10 +47,12 @@ namespace Testinator.EntityFrameworkCore.SqlServer.Test
             var clonedLogPath = Path.Combine(Directory.GetCurrentDirectory(), $"{testInstanceDbName}_log.ldf");
 
             File.Copy(_dbFilePath, clonedDbPath, true);
+            SetFileSecurity(clonedDbPath);
             File.Copy(_logFilePath, clonedLogPath, true);
+            SetFileSecurity(clonedLogPath);
 
-            // Rename the db in the mdf file (so it is unique) 
-            var sql = $"CREATE DATABASE [{testInstanceDbName}] ON (FILENAME = N'{clonedDbPath}'),(FILENAME = N'{clonedLogPath}') FOR ATTACH";
+            // Rename the db in the mdf file (so it is unique) and attach it 
+            var sql = $"CREATE DATABASE [{testInstanceDbName}] ON (FILENAME = N'{clonedDbPath}'),(FILENAME = N'{clonedLogPath}') FOR ATTACH;";
             ExecuteLocalDbNonQuerySql(sql);
 
             var connectionStringBuilder = new SqlConnectionStringBuilder
@@ -158,24 +162,23 @@ namespace Testinator.EntityFrameworkCore.SqlServer.Test
             }
         }
 
+        private void SetFileSecurity(string filePath)
+        {
+            FileInfo fInfo = new FileInfo(filePath);
+            FileSecurity fSecurity = fInfo.GetAccessControl();
+            fSecurity.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.None, PropagationFlags.NoPropagateInherit, AccessControlType.Allow));
+            fInfo.SetAccessControl(fSecurity);
+        }
+
         public void Dispose()
         {
             if (string.IsNullOrWhiteSpace(ConnectionString))
                 return;
 
-            var builder = new SqlConnectionStringBuilder(ConnectionString);
-
-            var sql = $"ALTER DATABASE [{builder.InitialCatalog}] SET OFFLINE WITH ROLLBACK IMMEDIATE; exec sp_detach_db '{builder.InitialCatalog}'";
-            ExecuteLocalDbNonQuerySql(sql);
-
-            File.Delete(builder.AttachDBFilename);
-            File.Delete(builder.AttachDBFilename.Replace(".mdf", "_log.ldf"));
-
-            //This seems to have file locking issues on some machines. Falling back to the above hack for the moment.   
-            //using (var context = (TContext)(Activator.CreateInstance(typeof(TContext), Options)))
-            //{
-            //    context.Database.EnsureDeleted();
-            //}
+            using (var context = (TContext)(Activator.CreateInstance(typeof(TContext), Options)))
+            {
+                context.Database.EnsureDeleted();
+            }
         }
     }
 }

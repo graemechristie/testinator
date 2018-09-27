@@ -125,7 +125,7 @@ namespace Testinator.EntityFrameworkCore.SqlServer.Test
                 using (var context = (TContext)(Activator.CreateInstance(typeof(TContext), options)))
                 {
                     context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
+                    context.Database.Migrate();
                 }
 
                 // Detach the DB (so the file is not locked)

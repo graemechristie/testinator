@@ -47,20 +47,20 @@ namespace MobileTransaction.Domain
                 .HasKey(e => e.Id);
 
             modelBuilder.Entity<Category>()
-                .SeedData(
+                .HasData(
                     new Category { Id = 1, Description = "Blue Widgets" },
                     new Category { Id = 2, Description = "Red Widgets" },
                     new Category { Id = 3, Description = "Other Widgets" });
 
             modelBuilder.Entity<Widget>()
-                .SeedData(
+                .HasData(
                     new Widget { Id = 1, Description = "Blue with Spots", CategoryId = 1, Price = 1.0m },
                     new Widget { Id = 2, Description = "Blue with Lines", CategoryId = 1, Price = 1.0m },
                     new Widget { Id = 3, Description = "Red all over", CategoryId = 2, Price = 1.0m },
                     new Widget { Id = 4, Description = "Green and Purple", CategoryId = 3, Price = 1.0m });
 
             modelBuilder.Entity<Store>()
-                .SeedData(
+                .HasData(
                     new Store {
                         Id = 1,
                         Name = "The Widget Haus",
@@ -79,7 +79,7 @@ namespace MobileTransaction.Domain
 
 
             modelBuilder.Entity<StoreWidget>()
-                .SeedData(
+                .HasData(
                     new StoreWidget { StoreId = 1, WidgetId = 1 },
                     new StoreWidget { StoreId = 1, WidgetId = 2 },
                     new StoreWidget { StoreId = 2, WidgetId = 2 },
